@@ -219,7 +219,7 @@ def applyCuts(var, ch,type_ind,cutLevel,config_ind):
         return 0
   return 1
 
-def plotInternalAsicResults():
+def plotInternalAsicResults(plotType):
   for g in range(0,4,1):
     for s in range(0,4,1):
       for b in range(0,2,1):
@@ -231,8 +231,10 @@ def plotInternalAsicResults():
         g_all[config_ind][1].GetYaxis().SetRangeUser(0,40)
         g_all[config_ind][2].GetYaxis().SetRangeUser(0,200)
 
-  graphNum = int(0)
-  bInd = int(0) #0 = 200mV, 1 = 900mV
+  graphNum = int(plotType)
+  if (graphNum < 0) or (graphNum > 2 ):
+    return
+  bInd = int(1) #0 = 200mV, 1 = 900mV
   c1.Clear()
   c1.Divide(2,2)
   for pad in range(0,4,1):
@@ -243,7 +245,6 @@ def plotInternalAsicResults():
     g_all[16+2*padNum+bInd][graphNum].Draw("LP")
     g_all[24+2*padNum+bInd][graphNum].Draw("LP")
   c1.Update()
-
   check = raw_input("Press key to continue")
 
 def clearGraphs():
@@ -425,23 +426,23 @@ def processRun(run):
       if meanRms > 2000 : 
         isBadRun = 1
 
-  c1.Clear()
-  h_badch_test.Draw()
-  c1.Update()
-  check = raw_input("Press key to continue")
+  #c1.Clear()
+  #h_badch_test.Draw()
+  #c1.Update()
+  #check = raw_input("Press key to continue")
 
   #Make internal pulser plots
-  #if (asicNum[0] == 7) or (asicNum[1] == 7) or (asicNum[2] == 7) or (asicNum[3] == 7) :
-  #  print str(runId)
+  #if (asicNum[0] == 71) or (asicNum[1] == 71) or (asicNum[2] == 71) or (asicNum[3] == 71) :
   #  print asicNum
-  plotInternalAsicResults()
+  #  plotInternalAsicResults(0)
 
 def main():
 
-  """
+  #open list of measurements, get all results
   with open('outfile.json') as json_data:
     data = json.load(json_data)
 
+  """
   runCount = 0
   for run in data:
     result = processRun( run )
@@ -449,8 +450,7 @@ def main():
       continue
     runCount = runCount + 1
   """
-
-  #open list of measurements, get all results
+  
   with open('outfile_hothdaq1.json') as json_data:
     data = json.load(json_data)
   print "Data length : " + str(len(data))
@@ -472,9 +472,10 @@ def main():
       continue
     runCount = runCount + 1
   print "Good run count : " + str(runCount)
+  
 
-  #plotOverallDistributions()
-  #saveOverallDistributions()
+  plotOverallDistributions()
+  saveOverallDistributions()
   #deriveCuts()
   
 if __name__ == '__main__':
