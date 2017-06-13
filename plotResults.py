@@ -178,15 +178,15 @@ def processTest(test_data, testNum, asicNum):
     #apply cut
     result = applyCuts(mean, chNum, 0,5 , config_ind)
     if result == 0 :
-      print "Bad channel " + str(chNum)
+      #print "Bad channel " + str(chNum)
       h_badch_test.SetBinContent(int(chNum)+1,1)
     result = applyCuts(rms, chNum, 1, 10, config_ind)
     if result == 0 :
-      print "Bad channel " + str(chNum)
+      #print "Bad channel " + str(chNum)
       h_badch_test.SetBinContent(int(chNum)+1,1)
     result = applyCuts(gain, chNum, 2, 5, config_ind)
     if result == 0 :
-      print "Bad channel " + str(chNum)
+      #print "Bad channel " + str(chNum)
       h_badch_test.SetBinContent(int(chNum)+1,1)
 
 def applyCuts(var, ch,type_ind,cutLevel,config_ind):
@@ -245,7 +245,7 @@ def plotInternalAsicResults(plotType):
     g_all[16+2*padNum+bInd][graphNum].Draw("LP")
     g_all[24+2*padNum+bInd][graphNum].Draw("LP")
   c1.Update()
-  check = raw_input("Press key to continue")
+  check = input("Press key to continue")
 
 def clearGraphs():
   for g in range(0,4,1):
@@ -287,7 +287,7 @@ def plotOverallDistributions():
     h_all[6+8*padNum+bInd][graphNum].Draw("same")
   c1.Update()
 
-  check = raw_input("Press key to continue")
+  check = input("Press key to continue")
 
 def saveOverallDistributions():
   f = TFile("output_analyzeResults.root", "recreate")
@@ -330,7 +330,7 @@ def deriveCuts():
           rms = h_all[config_ind][plotType].GetRMS()
 
           #print str(plotType) + "\t" + str(g) + "\t" + str(s) + "\t" + str(b) + "\t" + str(maxBin) + "\t" + str(mean) + "\t" + str(rms)
-          print str(g) + "\t" + str(s) + "\t" + str(b) + "\t" + str(maxBin) + "\t" + str(round(mean,2)) + "\t" + str(round(rms,2))
+          #print str(g) + "\t" + str(s) + "\t" + str(b) + "\t" + str(maxBin) + "\t" + str(round(mean,2)) + "\t" + str(round(rms,2))
 
           cutLimits.append([maxBin,mean,rms])
 
@@ -339,7 +339,7 @@ def deriveCuts():
           c1.Update()
           #check = raw_input("Press key to continue")
 
-  print cutLimits
+  #print cutLimits
 
 def processRun(run):
 
@@ -378,8 +378,12 @@ def processRun(run):
     return None
 
   #hardcode requirement for number of tests here, not ideal
-  if index != 45 :
-    return None
+  #if index != 45 :
+  #  return None
+
+  #print( runDate )
+  #if str(runDate) != "20170613":
+  #  return None
 
   #skip test runs
   if asicNum == [0,0,0,0] :
@@ -405,7 +409,7 @@ def processRun(run):
   h_rms_test.Reset()
   h_badch_test.Reset()
 
-  print str(runId)
+  print( str(runId) )
 
   #actually process tests in "good" run
   index = 0
@@ -434,7 +438,7 @@ def processRun(run):
   #Make internal pulser plots
   #if (asicNum[0] == 71) or (asicNum[1] == 71) or (asicNum[2] == 71) or (asicNum[3] == 71) :
   #  print asicNum
-  #  plotInternalAsicResults(0)
+  #plotInternalAsicResults(2)
 
 def main():
 
@@ -442,18 +446,17 @@ def main():
   with open('outfile.json') as json_data:
     data = json.load(json_data)
 
-  """
   runCount = 0
   for run in data:
     result = processRun( run )
     if result == None:
       continue
     runCount = runCount + 1
-  """
   
+  """
   with open('outfile_hothdaq1.json') as json_data:
     data = json.load(json_data)
-  print "Data length : " + str(len(data))
+  #print "Data length : " + str(len(data))
 
   runCount = 0
   for run in data:
@@ -464,15 +467,15 @@ def main():
 
   with open('outfile_hothdaq2.json') as json_data:
     data = json.load(json_data)
-  print "Data length : " + str(len(data))
+  #print "Data length : " + str(len(data))
 
   for run in data:
     result = processRun( run )
     if result == None:
       continue
     runCount = runCount + 1
-  print "Good run count : " + str(runCount)
-  
+  #print "Good run count : " + str(runCount)
+  """
 
   plotOverallDistributions()
   saveOverallDistributions()
