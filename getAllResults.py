@@ -1,8 +1,3 @@
-from builtins import range
-from builtins import int
-from builtins import str
-from builtins import hex
-from builtins import object
 import sys
 import string
 from subprocess import check_call as call
@@ -118,7 +113,13 @@ def get_immediate_subdirectories(a_dir):
 def main():
 
   #test data directory - HARDCODED
-  testDir = "/dsk/1/data/oper/feasic/quadFeAsic/"
+  #testDir = "/dsk/1/data/oper/feasic/quadFeAsic/"
+
+  if len(sys.argv) != 2 :
+    print( "Usage: python getAllResults <results directory>")
+    return
+  testDir = sys.argv[1]
+  print( str("Results directory : ") + str(testDir) )
 
   #get subdirectories
   subdirs = get_immediate_subdirectories(str(testDir))
