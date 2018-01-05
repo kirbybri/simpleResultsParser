@@ -49,7 +49,10 @@ def getTestResultsJsonFile(paramsFile, resultsFile):
       return None
 
   #convert to dict for test_version=1, unfortunate
-  jsonObject = json.loads(json_data)
+  if isinstance(json_data, str) == True:
+    jsonObject = json.loads(json_data)
+  else:
+    jsonObject = json_data
 
   #check if necessary entries in results dict
   results_var_names = ['type','timestamp','status_do_analysis','results']
